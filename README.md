@@ -6,7 +6,7 @@ instead.
 
 Setup is not tested beyond bootstrapping my own few shells.
 
-## Differences to other dotfile-keepers
+## Principles and differences to other dotfile-keepers
 
 * Home folder is a git work tree, so no linking of files
 * Git-dir is named as `~/.homekeeper`, so regular `git`-command does not detect it and is safe to use
