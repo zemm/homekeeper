@@ -16,7 +16,7 @@ Setup is not tested beyond bootstrapping my own few shells.
  * `homekeeper status` shows just changes to tracked files (no clutter of 34832 untracked files)
  * Use `homekeeper add -f` to add new files
 * Few internal commands like `homekeeper ls` to list tracked files
-* `homekeeper setup` for bootstrapping another shell
+* `homekeeper init` to begin (does ginit init, creates ignorefile and setups origin)
 
 Use at your own risk!
 
