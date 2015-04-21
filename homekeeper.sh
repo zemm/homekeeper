@@ -28,7 +28,7 @@ function hk_fail_no_repo {
 	exit 1
 }
 
-function hk_setup_repository {
+function hk_init_repository {
 	if ( hk_has_repository ) ; then
 		echo "Skipping creation of the repository $HK_REPO_PATH (already exists)"
 	else
@@ -39,28 +39,36 @@ function hk_setup_repository {
 	fi
 }
 
-function hk_setup_ignorefile {
+function hk_create_ignorefile {
 	IGNOREFILE_FULLPATH="$HK_TRACKED_PATH/$HK_IGNOREFILE"
 	if [ -e "$IGNOREFILE_FULLPATH" ] ; then
 		echo "Skipping the creation of the ignorefile $IGNOREFILE_FULLPATH (already exists)"
 	else
-		echo "Creating ignorefile $IGNOREFILE_FULLPATH"
-		echo "# Created by $HK_NAME at `date`" >> $IGNOREFILE_FULLPATH
-		echo "# Ignore everyhing by default" >> $IGNOREFILE_FULLPATH
-		echo "*" >> $IGNOREFILE_FULLPATH
-		echo "" >> $IGNOREFILE_FULLPATH
-		echo "# List of tracked files" >> $IGNOREFILE_FULLPATH
-		echo "!$HK_IGNOREFILE" >> $IGNOREFILE_FULLPATH
+		read -p "Should we create a new ignorefile at $IGNOREFILE_FULLPATH (Y/n)?" choise
+		case "$choise" in
+		y | Y | '' )
+			echo "Creating ignorefile $IGNOREFILE_FULLPATH"
+			echo "# Created by $HK_NAME at `date`" >> $IGNOREFILE_FULLPATH
+			echo "# Ignore everyhing by default" >> $IGNOREFILE_FULLPATH
+			echo "*" >> $IGNOREFILE_FULLPATH
+			echo "" >> $IGNOREFILE_FULLPATH
+			echo "# List of tracked files" >> $IGNOREFILE_FULLPATH
+			echo "!$HK_IGNOREFILE" >> $IGNOREFILE_FULLPATH
+			;;
+		*)
+			echo "Skipping ignorefile creation"
+			;;
+		esac
 	fi
 }
 
 function hk_setup_remote {
 	if $HK_BACKEND_CMD remote show | grep -x --quiet "$HK_REMOTENAME" ; then
-		echo "Skipping $HK_REMOTENAME address setup (already set)"
+		echo "Remote $HK_REMOTENAME already exists, skipping setup"
 	else
 		echo "Remotes now:"
 		$HK_BACKEND_CMD remote -v show
-		echo "Address for remote '$HK_REMOTENAME' (leave empty to skip): "
+		echo "Provide an address for remote '$HK_REMOTENAME' (leave empty to skip): "
 		read REMOTE_ADDR
 		if [ -z "$REMOTE_ADDR" ] ; then
 			echo "Skipping"
@@ -78,10 +86,10 @@ function hk_setup_remote {
 }
 
 case $1 in
-	'setup')
+	'init')
 		echo "$HK_NAME $HK_VERSION"
-		hk_setup_repository
-		hk_setup_ignorefile
+		hk_init_repository
+		hk_create_ignorefile
 		hk_setup_remote
 		;;
 
@@ -106,11 +114,11 @@ case $1 in
 		echo ""
 		echo "Usage:"
 		echo "  $HK_FILENAME                   # this help"
-		echo "  $HK_FILENAME setup             # setup tracking of $HK_TRACKED_PATH"
+		echo "  $HK_FILENAME init              # setup tracking of $HK_TRACKED_PATH"
 		echo "  $HK_FILENAME arg1 [arg2 [..]]  # passthrough to $HK_BACKEND using configs above"
 		echo "  $HK_FILENAME ls|versioned      # list files under homekeeper"
 		echo ""
-		echo "Passthrough to:"
+		echo "Passthrough commands to:"
 		echo "  $HK_BACKEND_CMD"
 		;;
 
