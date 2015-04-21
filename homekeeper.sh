@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 HK_NAME="homekeeper"
-HK_VERSION="v0.0.5"
+HK_VERSION="v1.0.0"
 HK_FILENAME=`basename "$0"`
 
 HK_DEFAULT_REPO_PATH="$HOME/.homekeeper"
