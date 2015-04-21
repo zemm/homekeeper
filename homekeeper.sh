@@ -103,6 +103,7 @@ case $1 in
 
 	'' | 'help' | '-h' | '--help' )
 		echo "$HK_NAME $HK_VERSION"
+		echo "https://github.com/zemm/homekeeper"
 		echo ""
 		echo "My personal way of versioning home without affecting git -command elsewhere,"
 		echo "aka. lazy-wrapper for git with renamed git-dir."
