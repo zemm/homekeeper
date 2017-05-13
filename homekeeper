@@ -14,9 +14,9 @@ function hk_help {
 	echo "# Using: ${HK_CMD}"
 	echo "#"
 	echo "# Commands:"
-	echo "#   $HK_SELF                   # this help"
-	echo "#   $HK_SELF ls|versioned      # list files under homekeeper"
-	echo "#   $HK_SELF arg1 [arg2 [..]]  # passthrough to git"
+	echo "#   $HK_SELF [help|-h|--help]  # This help"
+	echo "#   $HK_SELF ls|versioned      # List managed files"
+	echo "#   $HK_SELF arg1 [arg2 [..]]  # Passthrough to git"
 }
 
 function hk_help_init {
