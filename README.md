@@ -1,24 +1,86 @@
 # Yet another home folder keeper
 
-This one is for my own use, I advice you to
-[check out better and tested versions](http://dotfiles.github.com/)
-instead.
+## Motivation and differences to other dotfile-keepers
 
-Setup is not tested beyond bootstrapping my own few shells.
-
-## Principles and differences to other dotfile-keepers
-
-* Home folder is a git work tree, so no linking of files
-* Git-dir is named as `~/.homekeeper`, so regular `git`-command does not detect it and is safe to use
-* `homekeeper.sh` (at your $PATH) passes arguments to `git` using `~/.homekeeper` as git-dir
- * Use familiar git-commands to control your files
+* Proxy for Git; familiar commands, no new things to learn
+* Git-dir is located at `~/.homekeeper`, so regular `git`-commands are not affected and should be safe to use
+* Your home folder is a git work tree: no linking of files
+or install scripts. Files versioned in their original locations.
 * By default everything is ignored at `~/.gitignore`
- * `homekeeper status` shows just changes to tracked files (no clutter of 34832 untracked files)
- * Use `homekeeper add -f` to add new files
-* Few internal commands like `homekeeper ls` to list tracked files
-* `homekeeper init` to begin (does ginit init, creates ignorefile and setups origin)
+ * Avoids cluttering `homekeeper status` with thousands of files
+ * Explicit tracking of selected files with `homekeeper add -f`
+* `homekeeper ls` alias to show what is being tracked
 
-Use at your own risk!
+Use at your own risk (I have been for many years)!
+
+## 2.0: A Slimmed down Version
+
+Old `homekeeper.sh` worked the same way, but has cumbersome and
+unnecessarily complex init. I replaced it with a help text hint
+of a one way to do it.
+
+### Installation
+
+#### Option a) a bash script
+
+Download the script to your PATH:
+
+```
+cd ~/bin
+wget https://raw.githubusercontent.com/zemm/homekeeper/master/homekeeper.sh
+chmod o+x homekeeper.sh
+```
+
+#### Option b) slim barebones version
+
+Just add these to your ~/.bashrc or other rc file:
+```
+alias homekeeper='git --git-dir="${HOME}/.homekeeper" --work-tree="${HOME}"'
+alias homekeeper-ls='git --git-dir="${HOME}/.homekeeper" --work-tree="${HOME}" ls-tree -r --name-only HEAD "${HK_WORK_TREE}"'
+```
+
+### Setup and usage
+
+#### Preparations
+
+Create your remote bare dotfiles repo somewhere (github?)"
+
+#### Initialization
+
+Do this on every machine where you want your dotfiles to be managed
+
+```
+$ homekeeper init
+$ homekeeper remote add origin DOTFILES_REPO_URL
+```
+
+#### With empty / freshly created dotfiles repo
+
+On a first machine, create an ignorefile to ignore everything by
+default. We want to only manage explicit files, obviously not our
+home dir as a whole.
+
+```
+$ echo '*' >> ~/.gitignore
+$ homekeeper add --force ~/.gitignore
+$ homekeeper commit -m "Ignore everything by default; be explicit"
+$ homekeeper push origin master
+```
+
+#### With existing dotfiles repo
+
+- **Warning** Assert your dotfiles repo has the above `.gitignore`!
+- **WARNING** this is a destuctive operation that **will overwrite** local files that exist in the dotfiles repo!
+
+```
+$ homekeeper pull origin master
+$ homekeeper checkout --force master
+```
+
+#### Daily usage
+
+Use as you would git, just use `homekeeper` instead of `git`.
+Add new files with `homekeeper add --force MY_FILE`.
 
 ```
 This work is free. You can redistribute it and/or modify it under the
