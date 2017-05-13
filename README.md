@@ -15,7 +15,7 @@ Use at your own risk (I have been for many years)!
 
 ## 2.0: A Slimmed down Version
 
-Old `homekeeper.sh` worked the same way, but has cumbersome and
+Old `homekeeper` worked the same way, but has cumbersome and
 unnecessarily complex init. I replaced it with a help text hint
 of a one way to do it.
 
@@ -27,8 +27,8 @@ Download the script to your PATH:
 
 ```
 cd ~/bin
-wget https://raw.githubusercontent.com/zemm/homekeeper/master/homekeeper.sh
-chmod o+x homekeeper.sh
+wget https://raw.githubusercontent.com/zemm/homekeeper/master/homekeeper
+chmod o+x homekeeper
 ```
 
 #### Option b) slim barebones version
