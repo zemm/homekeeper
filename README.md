@@ -1,5 +1,14 @@
 # Yet another home folder keeper
 
+## TL;DR
+
+All you need to manage dotfiles:
+```
+alias homekeeper='git --git-dir="${HOME}/.homekeeper" --work-tree="${HOME}"'
+echo '*' >> ~/.gitignore
+```
+
+
 ## Motivation and differences to other dotfile-keepers
 
 * Proxy for Git; familiar commands, no new things to learn
