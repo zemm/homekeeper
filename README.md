@@ -1,4 +1,4 @@
-# Yet another home folder keeper
+# Yet another dotfiles manager
 
 ## TL;DR
 
